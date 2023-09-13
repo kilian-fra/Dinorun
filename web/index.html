@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="scaffolded-by" content="https://github.com/google/stagehand">
+    <title>Dino Run</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico">
+    <script defer src="main.dart.js"></script>
+</head>
+
+<body>
+
+  <!--This container holds all other sub-containers like the login-mask or the level-selection-->
+  <div class="appContainer">
+
+    <div id="loginContainer" class="subContainer">
+      <h1 class="gameHeadline">Dino Run - Login/Register</h1>
+      <form action="" id="loginForm">
+        <p id="statusMessageLogin" class="statusMessage hidden"></p>
+        <div class="formInput">
+          <input type="text" name="Username" placeholder="Bitte Username eingeben..." required maxlength="10">
+        </div>
+        <div class="formInput">
+          <input type="password" name="Passwort" placeholder="Bitte Passwort eingeben..." required maxlength="64">
+        </div>
+        <div class="formBtn">
+          <button type="submit" id="loginBtn">Login</button>
+          <button type="submit" id="registerBtn">Register</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="mainSelectionMenu" class="subContainer hidden">
+      <h1 class="gameHeadline">Dino Run</h1>
+      <div class="selectionButtons">
+        <button id="playBtn">Spielen</button>
+        <button id="rankingBtn">Rangliste</button>
+        <button id="aboutBtn">About</button>
+        <button id="deleteAccountBtn">Konto löschen</button>
+      </div>
+    </div>
+
+    <div id="levelSelectionContainer" class="subContainer hidden">
+      <h1 class="gameHeadline" id="gameHeadlineLevel">Levelauswahl</h1>
+      <div class="selectionButtons">
+        <button id="levelButton1">Level 1</button>
+        <button id="levelButton2">Level 2</button>
+        <button id="levelButton3">Level 3</button>
+        <button id="goBackBtn">Zurück</button>
+      </div>
+    </div>
+
+    <div class="rankingList hidden">
+      <h1 class="gameHeadline">Dino Run - Rangliste</h1>
+      <p id="statusMessageRanking" class="statusMessage hidden"></p>
+      <div id="scrollContainerRanking">
+        <ul class="rankListContent">
+        </ul>
+      </div>
+      <div class="selectionButtonsRow">
+        <button id="goBackRanking">Zurück</button>
+        <button id="deleteHighscoreBtn">Highscore löschen</button>
+      </div>
+    </div>
+
+    <div class="aboutPage hidden subContainer">
+      <h1 class="gameHeadline">Dino Run - About</h1>
+      <a class="statusMessage" href="https://www.svgrepo.com/svg/124996/dinosaur" target="_blank">Dino SVG - source</a>
+      <div class="selectionButtons">
+        <button id="aboutReturnBtn">Zurück</button>
+      </div>
+    </div>
+
+    <div class="gameContainer hidden">
+      <div id="gameContentContainer">
+        <div id="gameOverScreen">
+          <h1 class="gameHeadline">Game Over</h1>
+          <p id="gameOverMessage" class="statusMessage"></p>
+          <div class="selectionButtonsRow">
+            <button id="gameOverRetryBtn">Nochmal</button>
+            <button id="gameOverReturnBtn">Hauptmenü</button>
+          </div>
+        </div>
+
+        <!-- https://www.svgrepo.com/svg/124996/dinosaur -->
+        <!-- <object id="dino" data="dinosaur-svgrepo-com.svg" type="image/svg+xml"></object> -->
+        <div id="dino"></div>
+        <div id="ground"></div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

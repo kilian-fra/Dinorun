@@ -1,0 +1,79 @@
+@startuml
+
+left to right direction
+
+class Controller {
+  - Model _model
+  - View _view
+  - AppPage _currPage
+  - AppPage _lastPage
+  - bool _bIsPlaySelection
+  + Controller(Model m)
+  - _gameTimer()
+  - _handleLogin(username: String, password: String)
+  - _handleRegister(username: String, password: String)
+  - _handleLoginRegisterBtn(event: Event, isLogin: bool)
+  - _handleLvlBtn(lvl: int)
+  - _handleAuthError()
+  - _handlePlayBtn(event: Event)
+  - _handleRankingBtn(event: Event)
+  - _handleBackNavigation(event: Event)
+  - _handleSpaceKey(event: KeyboardEvent)
+  + setupEventListeners()
+}
+
+Controller --> Model
+Controller --> View
+
+class Model {
+}
+
+class View {
+  +Model model
+  +Element? player
+  -Element? _gameContentContainer
+  -List<Element> _obstacles
+  -LIElement _highscoreEntry
+  -StatusMessage _statusMessageLogin
+  -StatusMessage _statusMessageRanking
+  -StatusMessage _gameOverMsg
+  +View(Model m)
+  -String _getPageClass(AppPage page)
+  +void showGame()
+  +dynamic showRanking(int level)
+  +dynamic handleDeleteHighscore()
+  +dynamic handleDeleteAccount()
+  +dynamic updateGameContent()
+  +dynamic handleGameOver()
+  +void changePage(AppPage currPage, AppPage newPage)
+  +void stopGame({bool isRetry = false})
+  +void showAuthError()
+  +void changeLevelHeadlineText(String newText)
+  +void allAllObstacles()
+  +void addObstacle(Obstacle obstacle)
+  +void handleLogin(http.Response response)
+  +void handleRegister(http.Response response)
+  +void handleInputErrorLogin()
+}
+
+View --> Model
+View -- "0..*" StatusMessage
+View --> HttpResponseParser
+
+class StatusMessage {
+  -Element? _domElement
+  +Element? domElement()
+  +StatusMessage(String selector)
+  +void showError(String innerHtml)
+  +void showSuccess(String innerHtml)
+  +void show(String innerHtml)
+}
+
+class HttpResponseParser {
+  -Response? _response
+  +dynamic bodyData()
+  +HttpResponseParser(http.Response? response)
+  +bool parse()
+}
+
+@enduml

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb-init-script
+data:
+  initdb.sql: |
+    CREATE DATABASE dinorun;
+    USE dinorun;
+    CREATE TABLE users (username VARCHAR(10) PRIMARY KEY, password VARCHAR(64) NOT NULL);
+    CREATE TABLE highscore (user_id VARCHAR(10) NOT NULL, level INT NOT NULL, score INT NOT NULL, PRIMARY KEY (user_id, level), FOREIGN KEY (user_id) REFERENCES users(username) ON DELETE CASCADE);

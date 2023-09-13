@@ -1,0 +1,7 @@
+Flask
+flask_restx
+SQLAlchemy
+pymysql
+flask-cors
+mysqlclient
+gunicorn

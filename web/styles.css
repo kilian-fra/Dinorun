@@ -1,0 +1,277 @@
+.subContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 75vh;
+}
+
+.selectionButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectionButtons button {
+  margin: 5px 0;
+  padding: 15px 55px;
+  font-size: 18px; /* Größere Schriftgröße */
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 10px; /* Runder abgerundete Ecken */
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Leichter Schatten für ein 3D-Erscheinungsbild */
+  width: 100%;
+  user-select: none;
+}
+
+#aboutBtn {
+  margin-top: 40px;
+}
+
+.selectionButtonsRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.selectionButtonsRow button {
+  margin: 5px;
+  padding: 5px;
+  background-color: #007bff;
+  font-family: Arial;
+  color: #fff;
+  border: none;
+  border-radius: 10px; /* Runder abgerundete Ecken */
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Leichter Schatten für ein 3D-Erscheinungsbild */
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+#aboutReturnBtn,
+#deleteAccountBtn,
+#gameOverReturnBtn,
+#deleteHighscoreBtn {
+  background-color: rgb(255, 87, 87);
+}
+
+#goBackBtn {
+  background-color: rgb(255, 87, 87);
+  margin-top: 25px;
+}
+
+.selectionButtonsRow button:hover,
+.selectionButtons button:hover {
+  background-color: #0056b3;
+}
+
+#aboutReturnBtn:hover,
+#deleteAccountBtn:hover,
+#gameOverReturnBtn:hover,
+#deleteHighscoreBtn:hover,
+#goBackBtn:hover {
+  background-color: rgb(185, 0, 0);
+}
+
+.gameHeadline {
+  font-size: 32px;
+  color: #007bff;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  font-family: 'Arial', sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding-bottom: 25px;
+  user-select: none;
+}
+
+#loginForm {
+  text-align: center;
+  background: white;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, .3);
+}
+
+.formInput {
+  margin-bottom: 10px;
+}
+
+.formBtn {
+  margin-top: 20px;
+}
+
+.formBtn button {
+  margin: 5px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.formInput input {
+  padding: 10px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #f7f7f7;
+}
+
+.gameContainer {
+  position: relative;
+  margin: auto;
+  margin-top: 3%;
+  width: 99vw;
+  height: 85vh;
+  background-color: black; /* Schwarzer Rand */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8); /* Schatten-Effekt für den Rand */
+}
+
+#gameContentContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #f7f7f7; /* Spielfeld Hintergrundfarbe  #f7f7f7*/
+  border: 1px solid black; /* Spielfeld Rand */
+  box-sizing: border-box;
+}
+
+#ground {
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  background-color: #5b99db;;
+  bottom: 0%;
+}
+
+#dino {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  bottom: 42px;
+  left: 50px;
+  background-image: url(dinosaur-svgrepo-com_big.png);
+  background-size: 100px 100px;
+}
+
+.statusMessage {
+  font-family: Arial;
+  font-size: medium;
+  font-weight: bold;
+}
+
+.errorMessage {
+  color: red;
+}
+
+.successMessage {
+  color: green
+}
+
+.rankingList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 75vh;
+}
+
+#scrollContainerRanking {
+  max-height: 400px; /* Set the desired height */
+  width: 100%;
+  overflow-y: scroll;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.rankListContent {
+  counter-reset: rank;
+  list-style: none; 
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.rankingItem {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ccc;
+  user-select: none;
+}
+
+.rankingItem::before {
+  content: counter(rank);
+  counter-increment: rank;
+  font-family: Arial;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.username,
+.highscore {
+  font-family: Arial;
+  display: inline-block;
+  width: 50%;
+}
+
+.highscore {
+  color: #007bff;
+  text-align: right;
+}
+
+#gameOverScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  height: 50%;
+  width: 50%;
+  margin-top: 150px;
+  margin-left: 25%;
+}
+
+#gameOverScreen h1 {
+  font-size: 75px;
+}
+
+#gameOverScreen button {
+  width: 30%;
+  user-select: none;
+}
+
+.hidden {
+  display: none;
+}
+
+#aboutReturnBtn {
+  height: 80%;
+  margin-top: 50px;
+}
+
+.obstacle {
+  background-color: #007bff;
+}

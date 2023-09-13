@@ -1,0 +1,116 @@
+@startuml
+
+left to right direction
+
+class "Obstacle" {
+  -int _bottom
+  -int _left
+  -int _height
+  -int _width
+  -String _type
+  {static} +int DEFAULT_WIDTH
+  +bool isOutOfRange
+  +int bottom
+  +String type
+  +int left
+  +int height
+  +int width
+  +Obstacle(int bottom, int width, int height, int left)
+  +void move(int dxLeft)
+  +void setHeight(int newHeight)
+  +void setLeft(int newLeft)
+}
+
+class "ObstacleManager" {
+  -List<Obstacle> _obstacles
+  -int _level
+  -int _playerHeight
+  -int _playerWidth
+  -int _groundBottom
+  -int _lastUpdate
+  -DateTime _startTime
+  -int _nextUpdate
+  -int _dxLeft
+  -Player _player
+  +List<Obstacle> obstacles
+  +ObstacleManager(int level, int playerBottom, int playerHeight, int playerWidth, int groundBottom, Player player)
+  +bool isCollisionWithPlayer()
+  -int _genHeight()
+  -int _genLeftOffset()
+  -void _setNextUpdate()
+  +void update()
+  +void spawn()
+}
+
+"ObstacleManager" -- "1" "Player"
+"ObstacleManager" -- "0..*" "Obstacle"
+
+class "Player" {
+  {static} -int _COLLISION_TOLERANCE
+  {static} +int INITIAL_JUMP_TIME
+  -int _jmpTime
+  -bool _isJumping
+  -int _playerBottom
+  -int _groundBottom
+  -int _playerHeight
+  -int _playerWidth
+  -int _playerLeft
+  +int jmpTime
+  +bool isJumping
+  +int playerBottom
+  +int groundBottom
+  +int playerHeight
+  +int playerWidth
+  +int playerLeft
+  +void jump()
+  +bool isCollision(Obstacle obstacle)
+  +void setJmpTime(int newJmpTime)
+}
+
+"Player" --> "Obstacle"
+
+class "RESTRequest" {
+  {static} -String _URL
+  -String _resource
+  +RESTRequest(String resource)
+  +dynamic make(HttpMethod method, Map<String, String> data)
+}
+
+class "Model" {
+  -bool _bIsUserLoggedIn
+  -bool _bIsGameRunning
+  -bool _bIsGameOver
+  -Player _player
+  -String _authToken
+  -String _username
+  -ObstacleManager _obstacleManager
+  -int _currLevel
+  -bool _isAuthError
+  -DateTime _scoreStartTime
+  -int _scoreTime
+  +int score
+  +int currLevel
+  +bool isUserLoggedIn
+  +String username
+  +bool isAuthError
+  +bool isGameRunning
+  +Player player
+  +bool isGameOver
+  +List<Obstacle> obstacles
+  +dynamic handleLoginRegister(String username, String password, bool isLogin)
+  +void logoutUser()
+  -void _checkAuthResult(http.Response? response)
+  +dynamic deleteHighscore()
+  +dynamic deleteAccount()
+  +dynamic getHighscores(int level)
+  +dynamic updateHighscore()
+  +void updateGame()
+  +void startGame(int level)
+  +void stopGame()
+}
+
+"Model" -- "1" "Player"
+"Model" -- "1" "ObstacleManager"
+"Model" --> "RESTRequest"
+
+@enduml
