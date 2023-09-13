@@ -1,0 +1,111 @@
+# Build und Deployment Pipeline
+
+image: "thlmylab/swakkd:stable"
+
+variables:
+  DOMAIN: "edu.k8s.th-luebeck.dev"
+  INGRESS: "True"
+  RUN_DEPLOYMENT: "True"
+
+stages:
+- prepare
+- compile
+- build
+- deploy
+- expose
+- destroy
+
+registry-cred:
+  stage: prepare
+  only:
+    variables:
+      - $RUN_DEPLOYMENT == "True"
+  script:
+  - kubectl delete secret gitlab-registry-$CI_PROJECT_ID || true
+  - "kubectl create secret docker-registry gitlab-registry-$CI_PROJECT_ID \
+              --docker-server=$CI_REGISTRY \
+              --docker-username=image-registry \ 
+              --docker-password=$CI_REGISTRY_TOKEN"
+
+mariadb_secret:
+  stage: prepare
+  only:
+    variables:
+      - $RUN_DEPLOYMENT == "True"
+  script:
+    - kubectl apply -f deploy/backend/mariadb/mariadb-secret.yaml || true
+
+frontend-container:
+  stage: build
+  only:
+    variables:
+      - $RUN_DEPLOYMENT == "True"
+  image: docker:dind
+  services: ["docker:dind"]
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE/frontend:latest .
+    - docker push $CI_REGISTRY_IMAGE/frontend:latest
+
+backend-container:
+  stage: build
+  only:
+    variables:
+      - $RUN_DEPLOYMENT == "True"
+  image: docker:dind
+  services: ["docker:dind"]
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE/backend:latest backend
+    - docker push $CI_REGISTRY_IMAGE/backend:latest
+
+mariadb:
+  stage: deploy
+  only:
+    variables:
+      - $RUN_DEPLOYMENT == "True"
+  script:
+  - mo deploy/backend/mariadb/mariadb-pvc.yaml | kubectl apply -f -
+  - mo deploy/backend/mariadb/mariadb-cfg.yaml | kubectl apply -f -
+  - mo deploy/backend/mariadb/mariadb-svc.yaml | kubectl apply -f -
+  - mo deploy/backend/mariadb/mariadb-dep.yaml | kubectl apply -f -
+
+frontend:
+  stage: deploy
+  only:
+    variables:
+      - $RUN_DEPLOYMENT == "True"
+  script:
+  - mo deploy/frontend/frontend-dep.yaml | kubectl apply -f -
+  - mo deploy/frontend/frontend-svc.yaml | kubectl apply -f -
+
+backend:
+  stage: deploy
+  only:
+    variables:
+      - $RUN_DEPLOYMENT == "True"
+  script:
+  - mo deploy/backend/backend-dep.yaml | kubectl apply -f -
+  - mo deploy/backend/backend-svc.yaml | kubectl apply -f -
+
+ingress:
+  stage: expose
+  only:
+    variables:
+      - $INGRESS == "True"
+      - $RUN_DEPLOYMENT == "True"
+  script:
+  - HOST=dinorun-$CI_PROJECT_ID.$DOMAIN mo deploy/ingress.yaml | kubectl apply -f -
+
+cleanup:
+  stage: destroy
+  when: manual
+  script:
+  - mo deploy/ingress.yaml | kubectl delete -f - || true
+  - mo deploy/frontend/frontend-dep.yaml | kubectl delete -f - || true
+  - mo deploy/frontend/frontend-svc.yaml | kubectl delete -f - || true
+  - mo deploy/backend/backend-dep.yaml | kubectl delete -f - || true
+  - mo deploy/backend/backend-svc.yaml | kubectl delete -f - || true
+  - mo deploy/backend/mariadb/mariadb-dep.yaml | kubectl delete -f - || true
+  - mo deploy/backend/mariadb/mariadb-svc.yaml | kubectl delete -f - || true
+  - mo deploy/backend/mariadb/mariadb-secret.yaml | kubectl delete -f - || true
